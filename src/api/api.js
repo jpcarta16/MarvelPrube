@@ -220,3 +220,21 @@ export async function getAllComicsList(offset, limit) {
         throw error;
     }
 }
+
+// Función para obtener la lista de todas las series de Marvel
+export const getAllSeriesList = async (offset, limit) => {
+    try {
+        const timestamp = Date.now();
+        const publicKey = MARVEL_PUBLIC_KEY;
+        const hash = generateHash();
+
+        const url = `https://gateway.marvel.com/v1/public/series?apikey=${publicKey}&ts=${timestamp}&hash=${hash}&offset=${offset}&limit=${limit}`;
+        const response = await axios.get(url);
+
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener la lista de series:', error);
+        throw error;
+    }
+};
+

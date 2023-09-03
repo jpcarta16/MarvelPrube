@@ -3,6 +3,7 @@ import CharacterDetails from '@/views/CharacterDetails.vue';
 import ComicSeriesDetails from '@/views/ComicSeriesDetails.vue';
 import Character from '@/views/AllCharacter.vue';
 import AllComics from '@/views/AllComics.vue';
+import AllSeries from '@/views/AllSeries.vue';
 
 const routes = [
     {
@@ -33,6 +34,11 @@ const routes = [
         path: '/allcharacters',
         name: 'allCharacter',
         component: Character,
+    },
+    {
+        path: '/allseries',
+        name: 'AllSeries',
+        component: AllSeries,
     },
 ];
 
