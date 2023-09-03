@@ -1,26 +1,27 @@
 <template>
     <div class="container">
         <header class="header">
-            <h1>Bienvenido Marvel fan Page</h1>
-            <p>Explora y descubre información sobre tus personajes, cómics y series favoritas de Marvel.</p>
+            <h1 class="title">Bienvenido a Marvel Fan Page</h1>
+            <p class="subtitle">Explora y descubre información sobre tus personajes, cómics y series favoritas de Marvel.
+            </p>
         </header>
 
         <!-- Barra de búsqueda -->
         <div class="search-bar">
-            <input type="text" v-model="searchQuery" @input="search" placeholder="Buscar...">
+            <input type="text" v-model="searchQuery" @input="search" placeholder="Busca tu Personaje...">
         </div>
 
         <!-- Resultados de la búsqueda -->
         <div class="search-results">
             <!-- Resultados de Personajes -->
             <div v-if="searchResults.characters.length > 0">
-                <h2>Resultados de Personajes</h2>
+                <h2 class="section-title">Resultados de Personajes</h2>
                 <div class="row">
                     <div v-for="character in searchResults.characters" :key="character.id" class="col-md-3 mb-4">
                         <router-link :to="'/character/' + character.id">
                             <div class="card">
                                 <img v-if="character.thumbnailUrl" :src="character.thumbnailUrl" :alt="character.name"
-                                    class="card-img-top" />
+                                    class="card-img-top" style="max-width: 100%; height: auto;" />
                                 <div class="card-body">
                                     <h5 class="card-title">{{ character.name }}</h5>
                                     <!-- Agrega cualquier otra información que desees mostrar en la tarjeta -->
@@ -39,7 +40,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import {
     getCharacters,
     searchCharactersByName,
@@ -55,6 +56,30 @@ export default {
         const characters = ref([]);
         const searchQuery = ref('');
         const searchResults = ref({ characters: [], comics: [], series: [] });
+
+        // Lista de imágenes de fondo
+        const backgrounds = [
+            'background1.jpg',
+            'background2.jpg',
+            'background3.jpg',
+        ];
+
+        // Índice actual de la imagen de fondo
+        let backgroundIndex = 0;
+
+        const changeBackground = () => {
+            const backgroundImageUrl = `url(/${backgrounds[backgroundIndex]})`;
+            document.body.style.backgroundImage = backgroundImageUrl;
+            backgroundIndex = (backgroundIndex + 1) % backgrounds.length;
+        };
+
+        // Cambiar la imagen de fondo cada 2 segundos
+        const backgroundTimer = setInterval(changeBackground, 2000);
+
+        // Detener el temporizador cuando el componente se destruye
+        onUnmounted(() => {
+            clearInterval(backgroundTimer);
+        });
 
         const search = async () => {
             try {
@@ -108,31 +133,84 @@ export default {
 
 <style scoped>
 /* Estilos para la pantalla principal */
+body {
+    background-size: 50px 50px;
+    /* Establece el ancho y alto deseado */
+    background-repeat: no-repeat;
+    background-position: center center;
+    min-width: 100%;
+    /* Establece el ancho mínimo para que coincida con el ancho de la ventana del navegador */
+    min-height: 100%;
+    /* Establece el alto mínimo para que coincida con el alto de la ventana del navegador */
+}
+
 .header {
     text-align: center;
-    background-color: #333;
-    color: #fff;
+    color: #333;
     padding: 20px;
 }
 
+.title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+/* Estilos para la barra de búsqueda */
 .search-bar {
-    text-align: center;
-    margin-top: 20px;
+    background: black;
+    padding: 16px 32px;
+    color: #FFF;
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    border-radius: 12px;
 }
 
-.search-bar input {
-    width: 80%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.search-bar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, red, blue, deeppink, blue, red, blue, deeppink, blue);
+    background-size: 800%;
+    border-radius: 10px;
+    filter: blur(8px);
+    animation: glowing 20s linear infinite;
 }
 
+@keyframes glowing {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 400% 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}
+
+/* Resultados de la búsqueda */
 .search-results {
     margin-top: 20px;
 }
 
-.search-results h2 {
-    margin-top: 20px;
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 /* Estilos para las tarjetas de personajes */
@@ -141,6 +219,12 @@ export default {
     border-radius: 4px;
     padding: 10px;
     background-color: #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
 }
 
 .card img {
@@ -153,7 +237,4 @@ export default {
 
 .card-title {
     font-weight: bold;
-}
-
-/* Agrega más estilos según tus necesidades */
-</style>
+}</style>

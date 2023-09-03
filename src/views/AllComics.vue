@@ -10,7 +10,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ comic.title }}</h5>
                             <p class="card-text">
-                                {{ comic.title }}
+                                {{ comic.description }}
                             </p>
                             <p class="card-text">
                                 <small class="text-muted">Last updated 3 mins ago</small>
@@ -79,13 +79,12 @@ export default {
         async loadAllComics() {
             try {
                 const response = await getAllComicsList(this.offset, this.limit);
-                console.log("Response:", response); // Agrega esta línea para depurar la respuesta
                 const newComics = response.data.results.map((comic) => {
-                    console.log("Comic:", comic); // Agrega esta línea para depurar cada cómic
                     return {
                         id: comic.id,
                         title: comic.title,
                         thumbnail: `${comic.thumbnail.path}.${comic.thumbnail.extension}`,
+                        shortDescription: comic.shortDescription, // Agrega la descripción breve aquí
                     };
                 });
                 this.totalComics = response.data.total;
