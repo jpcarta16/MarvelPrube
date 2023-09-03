@@ -1,31 +1,19 @@
 <template>
-    <div>
+    <div class="container">
         <h1>Todos los Comics</h1>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3" v-for="comic in comics" :key="comic.id">
-                    <div class="card">
-                        <img class="card-img-top" :src="comic.thumbnail.path + '.' + comic.thumbnail.extension"
-                            :alt="comic.title" />
-                        <div class="card-body">
-                            <h5 class="card-title">{{ comic.title }}</h5>
-                            <p class="card-text">
-                                {{ comic.description }}
-                            </p>
-                            <p class="card-text">
-                                <small class="text-muted">Last updated 3 mins ago</small>
-                            </p>
-                        </div>
-                    </div>
+        <ul class="comic-list">
+            <li v-for="comic in comics" :key="comic.id" class="comic-item">
+                <div class="comic-details">
+                    <h5 class="comic-title">{{ comic.title }}</h5>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ul>
 
         <div v-if="comics.length === 0">
             <p>No se encontraron comics.</p>
         </div>
 
-        <div class="pagination container">
+        <div class="pagination-container">
             <button @click="loadPage(page)" v-for="page in visiblePageNumbers" :key="page"
                 :class="{ 'pagination-button': true, 'active': page === currentPage }">
                 {{ page }}
@@ -47,6 +35,7 @@ export default {
             totalComics: 0,
             currentPage: 1,
             maxVisiblePages: 9,
+            orderBy: 'title', // Agregamos un nuevo dato para controlar el orden por título
         };
     },
     computed: {
@@ -54,12 +43,12 @@ export default {
             return Math.ceil(this.totalComics / this.limit);
         },
         visiblePageNumbers() {
-            const currentPage = this.currentPage;
             const maxVisiblePages = this.maxVisiblePages;
             const pageCount = this.pageCount;
             const halfMaxVisiblePages = Math.floor(maxVisiblePages / 2);
-            let startPage = Math.max(currentPage - halfMaxVisiblePages, 1);
+            let startPage = Math.max(this.currentPage - halfMaxVisiblePages, 1);
             let endPage = Math.min(startPage + maxVisiblePages - 1, pageCount);
+            startPage = Math.max(endPage - maxVisiblePages + 1, 1);
 
             if (endPage - startPage < maxVisiblePages - 1) {
                 startPage = Math.max(endPage - maxVisiblePages + 1, 1);
@@ -78,13 +67,11 @@ export default {
     methods: {
         async loadAllComics() {
             try {
-                const response = await getAllComicsList(this.offset, this.limit);
+                const response = await getAllComicsList(this.offset, this.limit, this.orderBy); // Usamos el valor de orderBy para ordenar los cómics
                 const newComics = response.data.results.map((comic) => {
                     return {
                         id: comic.id,
                         title: comic.title,
-                        thumbnail: `${comic.thumbnail.path}.${comic.thumbnail.extension}`,
-                        shortDescription: comic.shortDescription, // Agrega la descripción breve aquí
                     };
                 });
                 this.totalComics = response.data.total;
@@ -106,24 +93,37 @@ export default {
 </script>
 
 <style scoped>
-.card-custom {
-    margin-bottom: 1px;
-}
-
-.pagination {
-    margin-top: 20px;
-    text-align: justify;
-    justify-content: center;
-}
-
-.pagination button {
-    margin-right: 5px;
-    cursor: pointer;
-}
-
 .container {
     text-align: center;
+}
+
+.comic-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comic-item {
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.comic-details {
+    flex: 1;
+}
+
+.comic-title {
+    font-size: 18px;
+    margin: 0;
+    color: #007bff;
+    /* Cambia el color de las letras a azul */
+}
+
+.pagination-container {
     margin-top: 20px;
+    text-align: center;
 }
 
 .pagination-button {

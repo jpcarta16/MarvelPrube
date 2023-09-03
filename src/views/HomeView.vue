@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import {
     getCharacters,
     searchCharactersByName,
@@ -57,29 +57,6 @@ export default {
         const searchQuery = ref('');
         const searchResults = ref({ characters: [], comics: [], series: [] });
 
-        // Lista de imágenes de fondo
-        const backgrounds = [
-            'background1.jpg',
-            'background2.jpg',
-            'background3.jpg',
-        ];
-
-        // Índice actual de la imagen de fondo
-        let backgroundIndex = 0;
-
-        const changeBackground = () => {
-            const backgroundImageUrl = `url(/${backgrounds[backgroundIndex]})`;
-            document.body.style.backgroundImage = backgroundImageUrl;
-            backgroundIndex = (backgroundIndex + 1) % backgrounds.length;
-        };
-
-        // Cambiar la imagen de fondo cada 2 segundos
-        const backgroundTimer = setInterval(changeBackground, 2000);
-
-        // Detener el temporizador cuando el componente se destruye
-        onUnmounted(() => {
-            clearInterval(backgroundTimer);
-        });
 
         const search = async () => {
             try {
@@ -132,18 +109,6 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos para la pantalla principal */
-body {
-    background-size: 50px 50px;
-    /* Establece el ancho y alto deseado */
-    background-repeat: no-repeat;
-    background-position: center center;
-    min-width: 100%;
-    /* Establece el ancho mínimo para que coincida con el ancho de la ventana del navegador */
-    min-height: 100%;
-    /* Establece el alto mínimo para que coincida con el alto de la ventana del navegador */
-}
-
 .header {
     text-align: center;
     color: #333;
@@ -237,4 +202,5 @@ body {
 
 .card-title {
     font-weight: bold;
-}</style>
+}
+</style>

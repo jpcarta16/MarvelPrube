@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :style="{ backgroundImage: 'url(' + currentBackground + ')' }">
     <!-- Barra de navegación mejorada -->
     <nav class="navbar navbar-expand-lg navbar-dark color-transition" :style="{ backgroundColor: currentColor }">
       <div class="container">
@@ -38,50 +38,34 @@ export default {
   name: 'App',
   data() {
     return {
-      colors: ['#4b0908', '#6a0c0b', '#aa0505', '#fbca03', '#b97d10'],
+      backgrounds: [
+        '/background1.jpg',
+        '/background2.jpg',
+        '/background3.jpg',
+      ],
       currentIndex: 0,
+      currentBackground: '/background1.jpg', // Fondo inicial
+      colors: ['#4b0908', '#6a0c0b', '#aa0505', '#fbca03', '#b97d10'],
+      currentIndexColor: 0,
       currentColor: '#e62429', // Rojo de Marvel inicial
     };
   },
   mounted() {
+    // Cambia el fondo cada 3 segundos
     setInterval(() => {
-      this.currentIndex = (this.currentIndex + 1) % this.colors.length;
-      this.currentColor = this.colors[this.currentIndex];
+      this.currentIndex = (this.currentIndex + 1) % this.backgrounds.length;
+      this.currentBackground = this.backgrounds[this.currentIndex];
+    }, 3000);
+
+    // Cambia el color de la barra de navegación cada 1.5 segundos
+    setInterval(() => {
+      this.currentIndexColor = (this.currentIndexColor + 1) % this.colors.length;
+      this.currentColor = this.colors[this.currentIndexColor];
     }, 1500);
   },
 };
 </script>
 
 <style scoped>
-/* Estilos para los elementos del menú de navegación */
-.navbar-nav .nav-link {
-  color: #fff;
-  /* Texto blanco */
-  font-weight: bold;
-  /* Añadido para enfatizar los elementos */
-  transition: color 0.3s;
-  /* Efecto de transición al pasar el cursor */
-  margin-right: 20px;
-  /* Espacio entre elementos */
-}
-
-/* Estilos de hover para los elementos del menú */
-.navbar-nav .nav-link:hover {
-  color: #f0f0f0;
-  /* Color de texto al pasar el cursor */
-}
-
-/* Estilos para el botón de hamburguesa (para dispositivos móviles) */
-.navbar-toggler-icon {
-  background-color: #fff;
-}
-
-/* Estilos para el botón de hamburguesa al pasar el cursor */
-.navbar-toggler:hover .navbar-toggler-icon {
-  background-color: #f0f0f0;
-}
-
-.color-transition {
-  transition: background-color 1s ease-in-out;
-}
+/* Resto de tus estilos */
 </style>
