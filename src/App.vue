@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- Barra de navegación mejorada -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark color-transition">
+    <nav class="navbar navbar-expand-lg navbar-dark color-transition" :style="{ backgroundColor: currentColor }">
       <div class="container">
         <!-- Logo de tu aplicación -->
         <router-link to="/" class="navbar-brand">
@@ -36,32 +36,23 @@
 <script>
 export default {
   name: 'App',
+  data() {
+    return {
+      colors: ['#4b0908', '#6a0c0b', '#aa0505', '#fbca03', '#b97d10'],
+      currentIndex: 0,
+      currentColor: '#e62429', // Rojo de Marvel inicial
+    };
+  },
   mounted() {
-    const colors = ['#4b0908', '#6a0c0b', '#aa0505', '#fbca03', '#b97d10'];
-    let currentIndex = 0;
-
     setInterval(() => {
-      currentIndex = (currentIndex + 1) % colors.length;
-      const newColor = colors[currentIndex];
-      document.querySelector('.color-transition').style.backgroundColor = newColor;
+      this.currentIndex = (this.currentIndex + 1) % this.colors.length;
+      this.currentColor = this.colors[this.currentIndex];
     }, 1500);
   },
 };
 </script>
 
 <style scoped>
-/* Estilos para la barra de navegación */
-.navbar {
-  background-color: #e62429;
-  /* Rojo de Marvel */
-}
-
-/* Estilos para el logo de tu aplicación */
-.navbar-brand img {
-  max-width: 100%;
-  height: auto;
-}
-
 /* Estilos para los elementos del menú de navegación */
 .navbar-nav .nav-link {
   color: #fff;

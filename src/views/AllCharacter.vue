@@ -3,12 +3,14 @@
         <div class="container"> <!-- Agregado el contenedor -->
             <div class="row">
                 <div class="col-md-3" v-for="character in characters" :key="character.id">
-                    <div class="card bg-dark text-white mb-3">
-                        <img class="card-img" :src="character.thumbnail" :alt="character.name" />
-                        <div class="card-img-overlay">
-                            <h5 class="card-title">{{ character.name }}</h5>
+                    <router-link :to="'/character/' + character.id" class="nav-link"> <!-- Cambio aquí -->
+                        <div class="card bg-dark text-white mb-3">
+                            <img class="card-img" :src="character.thumbnail" :alt="character.name" />
+                            <div class="card-img-overlay">
+                                <h5 class="card-title">{{ character.name }}</h5>
+                            </div>
                         </div>
-                    </div>
+                    </router-link>
                 </div>
             </div>
         </div>
