@@ -33,8 +33,8 @@ export default {
     name: "AllSeries",
     data() {
         return {
-            series: [], // Almacena todas las series
-            currentSeries: [], // Almacena las series a mostrar en la página actual
+            series: [],
+            currentSeries: [],
             offset: 0,
             limit: 20,
             totalSeries: 0,
@@ -85,7 +85,6 @@ export default {
             }
         },
         updateCurrentSeries() {
-            // Actualiza las series a mostrar en función de la página actual
             const startIndex = (this.currentPage - 1) * this.limit;
             const endIndex = startIndex + this.limit;
             this.currentSeries = this.series.slice(startIndex, endIndex);

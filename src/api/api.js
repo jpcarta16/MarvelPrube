@@ -4,12 +4,12 @@ import CryptoJS from 'crypto-js';
 
 // Función para calcular el hash MD5
 const generateHash = () => {
-    const timestamp = Date.now();
-    const privateKey = MARVEL_PRIVATE_KEY;
-    const publicKey = MARVEL_PUBLIC_KEY;
+    const timestamp = Date.now(); // Obtener la marca de tiempo actual
+    const privateKey = MARVEL_PRIVATE_KEY; // Clave privada de Marvel
+    const publicKey = MARVEL_PUBLIC_KEY; // Clave pública de Marvel
 
-    const hashInput = `${timestamp}${privateKey}${publicKey}`;
-    return CryptoJS.MD5(hashInput).toString();
+    const hashInput = `${timestamp}${privateKey}${publicKey}`; // Combinar timestamp y claves
+    return CryptoJS.MD5(hashInput).toString(); // Calcular el hash MD5 y convertirlo a cadena
 };
 
 // Función para obtener todos los personajes
@@ -19,16 +19,17 @@ export async function getAllCharacters(offset, limit) {
         const publicKey = MARVEL_PUBLIC_KEY;
         const hash = generateHash();
 
+        // Realizar una solicitud GET a la API de Marvel para obtener la lista de personajes
         const response = await axios.get(
             `https://gateway.marvel.com/v1/public/characters?apikey=${publicKey}&ts=${timestamp}&hash=${hash}&offset=${offset}&limit=${limit}`
         );
-        return response.data;
+
+        return response.data; // Retornar la respuesta de la API
     } catch (error) {
-        console.error('Error al obtener la lista de personajes:', error);
-        throw error;
+        console.error('Error al obtener la lista de personajes:', error); // Manejo de errores
+        throw error; // Lanzar el error para que se maneje en otro lugar
     }
 }
-
 
 // Función para obtener una lista de personajes
 export const getCharacters = async () => {
@@ -37,20 +38,21 @@ export const getCharacters = async () => {
         const publicKey = MARVEL_PUBLIC_KEY;
         const hash = generateHash();
 
+        // Realizar una solicitud GET a la API de Marvel para obtener la lista de personajes
         const response = await axios.get(
             `https://gateway.marvel.com/v1/public/characters?apikey=${publicKey}&ts=${timestamp}&hash=${hash}`
         );
 
+        // Mapear los resultados para obtener información específica de cada personaje
         const characters = response.data.data.results.map((character) => {
             return {
                 id: character.id,
                 name: character.name,
-                // Agrega la información de la imagen
-                thumbnail: character.thumbnail,
+                thumbnail: character.thumbnail, // Agregar información de la imagen
             };
         });
 
-        return characters;
+        return characters; // Retornar la lista de personajes
     } catch (error) {
         console.error('Error al obtener la lista de personajes:', error);
         throw error;
@@ -65,12 +67,12 @@ export const getCharacter = async (characterId) => {
         const hash = generateHash();
 
         const url = `https://gateway.marvel.com/v1/public/characters/${characterId}?apikey=${publicKey}&ts=${timestamp}&hash=${hash}`;
-        console.log('URL de la API:', url); // Agrega esta línea para verificar la URL
+        console.log('URL de la API:', url); // Agregar esta línea para verificar la URL
 
         const response = await axios.get(url);
-        console.log('Respuesta de la API:', response.data); // Agrega esta línea para verificar la respuesta
+        console.log('Respuesta de la API:', response.data); // Agregar esta línea para verificar la respuesta
 
-        return response.data.data.results[0];
+        return response.data.data.results[0]; // Retornar el primer resultado
     } catch (error) {
         console.error('Error al cargar los detalles del personaje:', error);
         throw error;
@@ -87,7 +89,7 @@ export const getCharacterComics = async (characterId) => {
         const url = `https://gateway.marvel.com/v1/public/characters/${characterId}/comics?apikey=${publicKey}&ts=${timestamp}&hash=${hash}`;
         const response = await axios.get(url);
 
-        return response.data.data.results;
+        return response.data.data.results; // Retornar los cómics en los que aparece el personaje
     } catch (error) {
         console.error('Error al obtener los cómics del personaje:', error);
         throw error;
@@ -104,7 +106,7 @@ export const getCharacterSeries = async (characterId) => {
         const url = `https://gateway.marvel.com/v1/public/characters/${characterId}/series?apikey=${publicKey}&ts=${timestamp}&hash=${hash}`;
         const response = await axios.get(url);
 
-        return response.data.data.results;
+        return response.data.data.results; // Retornar las series en las que aparece el personaje
     } catch (error) {
         console.error('Error al obtener las series del personaje:', error);
         throw error;
@@ -117,10 +119,13 @@ export const searchCharactersByName = async (name) => {
         const timestamp = Date.now();
         const publicKey = MARVEL_PUBLIC_KEY;
         const hash = generateHash();
+
+        // Realizar una solicitud GET para buscar personajes por nombre
         const response = await axios.get(
             `https://gateway.marvel.com/v1/public/characters?nameStartsWith=${name}&apikey=${publicKey}&ts=${timestamp}&hash=${hash}`
         );
-        return response.data.data.results;
+
+        return response.data.data.results; // Retornar la lista de personajes encontrados
     } catch (error) {
         console.error('Error al buscar personajes por nombre:', error);
         throw error;
@@ -133,10 +138,13 @@ export const searchComicsByTitle = async (title) => {
         const timestamp = Date.now();
         const publicKey = MARVEL_PUBLIC_KEY;
         const hash = generateHash();
+
+        // Realizar una solicitud GET para buscar cómics por título
         const response = await axios.get(
             `https://gateway.marvel.com/v1/public/comics?titleStartsWith=${title}&apikey=${publicKey}&ts=${timestamp}&hash=${hash}`
         );
-        return response.data.data.results;
+
+        return response.data.data.results; // Retornar la lista de cómics encontrados
     } catch (error) {
         console.error('Error al buscar cómics por título:', error);
         throw error;
@@ -149,10 +157,13 @@ export const searchSeriesByTitle = async (title) => {
         const timestamp = Date.now();
         const publicKey = MARVEL_PUBLIC_KEY;
         const hash = generateHash();
+
+        // Realizar una solicitud GET para buscar series por título
         const response = await axios.get(
             `https://gateway.marvel.com/v1/public/series?titleStartsWith=${title}&apikey=${publicKey}&ts=${timestamp}&hash=${hash}`
         );
-        return response.data.data.results;
+
+        return response.data.data.results; // Retornar la lista de series encontradas
     } catch (error) {
         console.error('Error al buscar series por título:', error);
         throw error;
@@ -164,12 +175,12 @@ export const getComic = async (comicId) => {
     try {
         const publicKey = MARVEL_PUBLIC_KEY;
 
-        // Realiza una solicitud GET a la API de Marvel para obtener los detalles del cómic
+        // Realizar una solicitud GET a la API de Marvel para obtener los detalles del cómic
         const response = await axios.get(
             `https://gateway.marvel.com/v1/public/comics/${comicId}?apikey=${publicKey}`
         );
 
-        // Verifica si la solicitud fue exitosa y retorna los detalles del cómic
+        // Verificar si la solicitud fue exitosa y retornar los detalles del cómic
         if (response && response.data && response.data.data && response.data.data.results) {
             return response.data.data.results[0];
         } else {
@@ -179,19 +190,19 @@ export const getComic = async (comicId) => {
         console.error('Error al obtener los detalles del cómic:', error);
         throw error;
     }
-};
+}
 
 // Función para obtener los detalles de una serie por su ID
 export const getSeries = async (seriesId) => {
     try {
         const publicKey = MARVEL_PUBLIC_KEY;
 
-        // Realiza una solicitud GET a la API de Marvel para obtener los detalles de la serie
+        // Realizar una solicitud GET a la API de Marvel para obtener los detalles de la serie
         const response = await axios.get(
             `https://gateway.marvel.com/v1/public/series/${seriesId}?apikey=${publicKey}`
         );
 
-        // Verifica si la solicitud fue exitosa y retorna los detalles de la serie
+        // Verificar si la solicitud fue exitosa y retornar los detalles de la serie
         if (response && response.data && response.data.data && response.data.data.results) {
             return response.data.data.results[0];
         } else {
@@ -210,11 +221,12 @@ export async function getAllComicsList(offset, limit) {
         const publicKey = MARVEL_PUBLIC_KEY;
         const hash = generateHash();
 
+        // Realizar una solicitud GET a la API de Marvel para obtener la lista de cómics
         const response = await axios.get(
             `https://gateway.marvel.com/v1/public/comics?apikey=${publicKey}&ts=${timestamp}&hash=${hash}&offset=${offset}&limit=${limit}`
         );
 
-        return response.data;
+        return response.data; // Retornar la respuesta de la API
     } catch (error) {
         console.error('Error al obtener la lista de cómics:', error);
         throw error;
@@ -231,10 +243,9 @@ export const getAllSeriesList = async (offset, limit) => {
         const url = `https://gateway.marvel.com/v1/public/series?apikey=${publicKey}&ts=${timestamp}&hash=${hash}&offset=${offset}&limit=${limit}`;
         const response = await axios.get(url);
 
-        return response.data;
+        return response.data; // Retornar la respuesta de la API
     } catch (error) {
         console.error('Error al obtener la lista de series:', error);
         throw error;
     }
 };
-

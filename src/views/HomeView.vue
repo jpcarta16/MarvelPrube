@@ -6,14 +6,11 @@
             </p>
         </header>
 
-        <!-- Barra de búsqueda -->
         <div class="search-bar">
             <input type="text" v-model="searchQuery" @input="search" placeholder="Busca tu Personaje...">
         </div>
 
-        <!-- Resultados de la búsqueda -->
         <div class="search-results">
-            <!-- Resultados de Personajes -->
             <div v-if="searchResults.characters.length > 0">
                 <h2 class="section-title">Resultados de Personajes</h2>
                 <div class="row">
@@ -24,11 +21,8 @@
                                     class="card-img-top" style="max-width: 100%; height: auto;" />
                                 <div class="card-body">
                                     <h5 class="card-title">{{ character.name }}</h5>
-                                    <!-- Agrega cualquier otra información que desees mostrar en la tarjeta -->
                                 </div>
-                                <!-- Agrega un enlace en el botón si es necesario -->
                                 <div class="card-footer text-muted">
-                                    <!-- Puedes mostrar la fecha u otra información aquí -->
                                 </div>
                             </div>
                         </router-link>
@@ -60,14 +54,12 @@ export default {
 
         const search = async () => {
             try {
-                const query = searchQuery.value.trim(); // Obtén la consulta de búsqueda sin espacios en blanco
+                const query = searchQuery.value.trim();
 
-                // Utiliza tus funciones de API para obtener los resultados
                 const characterResults = await searchCharactersByName(query);
                 const comicResults = await searchComicsByTitle(query);
                 const seriesResults = await searchSeriesByTitle(query);
 
-                // Actualiza searchResults con los resultados de la búsqueda
                 searchResults.value = {
                     characters: characterResults.map((character) => {
                         return {
@@ -87,7 +79,6 @@ export default {
             try {
                 const data = await getCharacters();
 
-                // Agregar la información de la imagen (thumbnail) a cada personaje
                 characters.value = data.map((character) => {
                     return {
                         ...character,
@@ -127,7 +118,6 @@ export default {
     margin-bottom: 20px;
 }
 
-/* Estilos para la barra de búsqueda */
 .search-bar {
     background: black;
     padding: 16px 32px;
@@ -167,7 +157,6 @@ export default {
     }
 }
 
-/* Resultados de la búsqueda */
 .search-results {
     margin-top: 20px;
 }
@@ -178,7 +167,6 @@ export default {
     margin-bottom: 10px;
 }
 
-/* Estilos para las tarjetas de personajes */
 .card {
     border: 1px solid #ccc;
     border-radius: 4px;

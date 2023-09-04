@@ -70,7 +70,7 @@ export default {
         const series = ref([]);
         const currentPageComics = ref(1);
         const currentPageSeries = ref(1);
-        const itemsPerPage = 20; // Cantidad de elementos por página
+        const itemsPerPage = 20;
 
         onMounted(async () => {
             try {
@@ -136,10 +136,8 @@ export default {
 <style scoped>
 .character-details {
     background-color: #f7f7f7;
-    /* Cambia el color de fondo según tus preferencias */
     border-radius: 10px;
     padding: 10px;
-    /* Reducido el padding para hacer la caja más pequeña */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -152,8 +150,6 @@ export default {
 
 .character-image img {
     max-width: 150px;
-    /* Reducido el tamaño máximo de la imagen */
-    /* Ajusta el tamaño de la imagen según tus preferencias */
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
@@ -171,7 +167,6 @@ export default {
     margin: 0 5px;
     cursor: pointer;
     padding: 8px 16px;
-    /* Aumenta el espacio interno del botón */
     background-color: #007bff;
     color: white;
     border: none;

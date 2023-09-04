@@ -19,7 +19,7 @@
         <div class="pagination-container">
             <button @click="loadPage(page)" v-for="page in visiblePageNumbers" :key="page"
                 :class="{ 'pagination-button': true, 'active': page === currentPage }">
-                <i class="fas fa-chevron-right"></i> <!-- Ícono de flecha derecha -->
+                <i class="fas fa-chevron-right"></i>
             </button>
         </div>
     </div>
@@ -103,7 +103,6 @@ export default {
 .container {
     text-align: center;
     font-family: 'Nunito', sans-serif;
-    /* Cambia 'Nunito' a la fuente que prefieras */
 }
 
 .comic-list {
@@ -116,13 +115,11 @@ export default {
     margin-bottom: 20px;
     padding: 10px;
     max-width: 400px;
-    /* Ajusta el ancho máximo según tu preferencia */
     display: flex;
     align-items: center;
     background-color: white;
     transition: opacity 0.3s;
     margin: 0 auto;
-    /* Centra horizontalmente */
 }
 
 .comic-item:hover {

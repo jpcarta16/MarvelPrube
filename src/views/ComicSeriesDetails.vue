@@ -5,16 +5,12 @@
         </header>
 
         <div v-if="comic || serie">
-            <!-- Mostrar detalles específicos de cómic o serie -->
             <h2>
                 {{ isComic ? (comic ? comic.title : 'Cargando...') : (serie ? serie.title : 'Cargando...') }}
             </h2>
             <p>
                 {{ isComic ? (comic ? comic.description : 'Cargando...') : (serie ? serie.description : 'Cargando...') }}
             </p>
-
-            <!-- Puedes mostrar más detalles aquí, como imágenes, fechas, etc. -->
-
             <router-link :to="`/${isComic ? 'comic' : 'serie'}/${itemId}`">Volver</router-link>
         </div>
 
@@ -30,8 +26,8 @@ import { getComic, getSeries } from '@/api/api.js';
 
 export default {
     props: {
-        isComic: Boolean, // Indica si se trata de un cómic o serie
-        itemId: String, // ID del cómic o serie a mostrar
+        isComic: Boolean,
+        itemId: String,
     },
     setup(props) {
         const comic = ref(null);
@@ -63,7 +59,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Estilos para la vista ComicSeriesDetails.vue */
-/* Puedes agregar estilos personalizados aquí */
-</style>
+<style scoped></style>

@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="container"> <!-- Agregado el contenedor -->
+        <div class="container">
             <div class="row">
                 <div class="col-md-3" v-for="character in characters" :key="character.id">
-                    <router-link :to="'/character/' + character.id" class="nav-link"> <!-- Cambio aquí -->
+                    <router-link :to="'/character/' + character.id" class="nav-link">
                         <div class="card bg-dark text-white mb-3">
                             <img class="card-img" :src="character.thumbnail" :alt="character.name" />
                             <div class="card-img-overlay">
@@ -19,7 +19,7 @@
             <p>No se encontraron personajes.</p>
         </div>
 
-        <div class="pagination container"> <!-- Centra la paginación -->
+        <div class="pagination container">
             <button @click="loadPage(page)" v-for="page in visiblePageNumbers" :key="page"
                 :class="{ 'pagination-button': true, 'active': page === currentPage }">
                 {{ page }}
@@ -40,7 +40,7 @@ export default {
             limit: 20,
             totalCharacters: 0,
             currentPage: 1,
-            maxVisiblePages: 9, // Número máximo de páginas visibles
+            maxVisiblePages: 9,
         };
     },
     computed: {
