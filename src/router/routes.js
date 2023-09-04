@@ -1,5 +1,5 @@
 import HomeView from '@/views/HomeView.vue';
-import CharacterDetails from '@/views/CharacterDetails.vue';
+import CharacterDetails from '@/components/CharacterDetails.vue';
 import ComicSeriesDetails from '@/views/ComicSeriesDetails.vue';
 import Character from '@/views/AllCharacter.vue';
 import AllComics from '@/views/AllComics.vue';

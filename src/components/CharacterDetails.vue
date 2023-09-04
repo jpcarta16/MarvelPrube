@@ -1,15 +1,18 @@
 <template>
-    <div class="character-details">
-        <h1>{{ character.name }}</h1>
-        <div class="character-image">
-            <img :src="character.thumbnail ? character.thumbnail.path + '.' + character.thumbnail.extension : ''"
-                :alt="character.name" />
+    <div class="character-details container">
+        <div class="character-header">
+            <h1>{{ character.name }}</h1>
+            <div class="character-image">
+                <img :src="character.thumbnail ? character.thumbnail.path + '.' + character.thumbnail.extension : ''"
+                    :alt="character.name" />
+            </div>
         </div>
+
         <div class="character-description">
             <h2>Descripción</h2>
-            <p v-if="character.description">{{ character.description }}</p>
-            <p v-else>No hay descripción disponible.</p>
+            <p>{{ character.description || 'No hay descripción disponible.' }}</p>
         </div>
+
         <div class="character-comics">
             <h2>Comics en los que aparece</h2>
             <ul>
@@ -18,14 +21,18 @@
                 </li>
             </ul>
             <div class="pagination">
-                <button @click="changePage('prevComics')" :disabled="currentPageComics === 1">
+                <button @click="changePage('prevComics')" :disabled="currentPageComics === 1" class="pagination-button">
+                    <i class="fas fa-chevron-left"></i>
                     Anterior
                 </button>
-                <button @click="changePage('nextComics')" :disabled="currentPageComics === pageCountComics">
+                <button @click="changePage('nextComics')" :disabled="currentPageComics === pageCountComics"
+                    class="pagination-button">
                     Siguiente
+                    <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
         </div>
+
         <div class="character-series">
             <h2>Series en las que aparece</h2>
             <ul>
@@ -34,11 +41,14 @@
                 </li>
             </ul>
             <div class="pagination">
-                <button @click="changePage('prevSeries')" :disabled="currentPageSeries === 1">
+                <button @click="changePage('prevSeries')" :disabled="currentPageSeries === 1" class="pagination-button">
+                    <i class="fas fa-chevron-left"></i>
                     Anterior
                 </button>
-                <button @click="changePage('nextSeries')" :disabled="currentPageSeries === pageCountSeries">
+                <button @click="changePage('nextSeries')" :disabled="currentPageSeries === pageCountSeries"
+                    class="pagination-button">
                     Siguiente
+                    <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
         </div>
@@ -125,28 +135,52 @@ export default {
 
 <style scoped>
 .character-details {
+    background-color: #f7f7f7;
+    /* Cambia el color de fondo según tus preferencias */
+    border-radius: 10px;
+    padding: 10px;
+    /* Reducido el padding para hacer la caja más pequeña */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.character-header {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .character-image img {
-    max-width: 300px;
+    max-width: 150px;
+    /* Reducido el tamaño máximo de la imagen */
+    /* Ajusta el tamaño de la imagen según tus preferencias */
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-.pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+.character-description {
+    margin-bottom: 20px;
 }
 
-.pagination button {
+.character-comics,
+.character-series {
+    margin-bottom: 20px;
+}
+
+.pagination-button {
     margin: 0 5px;
     cursor: pointer;
+    padding: 8px 16px;
+    /* Aumenta el espacio interno del botón */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
 }
 
-.pagination button:disabled {
-    cursor: not-allowed;
+.pagination-button i {
+    margin-right: 5px;
 }
 </style>

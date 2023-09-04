@@ -8,4 +8,11 @@ module.exports = {
             },
         },
     },
+    configureWebpack: {
+        resolve: {
+            alias: {
+                '@': path.resolve(__dirname, 'src'), // Ajusta la ruta según la estructura de tu proyecto
+            },
+        },
+    },
 };
