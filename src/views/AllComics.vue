@@ -1,6 +1,9 @@
 <template>
     <div class="container">
         <h1>Todos los Comics</h1>
+        <div v-if="loading">
+            <p>Cargando cómics...</p>
+        </div>
         <ul class="comic-list">
             <li v-for="comic in comics" :key="comic.id" class="comic-item">
                 <div class="comic-details">
@@ -16,7 +19,7 @@
         <div class="pagination-container">
             <button @click="loadPage(page)" v-for="page in visiblePageNumbers" :key="page"
                 :class="{ 'pagination-button': true, 'active': page === currentPage }">
-                {{ page }}
+                <i class="fas fa-chevron-right"></i> <!-- Ícono de flecha derecha -->
             </button>
         </div>
     </div>
@@ -35,7 +38,8 @@ export default {
             totalComics: 0,
             currentPage: 1,
             maxVisiblePages: 9,
-            orderBy: 'title', // Agregamos un nuevo dato para controlar el orden por título
+            orderBy: 'title',
+            loading: false,
         };
     },
     computed: {
@@ -67,7 +71,8 @@ export default {
     methods: {
         async loadAllComics() {
             try {
-                const response = await getAllComicsList(this.offset, this.limit, this.orderBy); // Usamos el valor de orderBy para ordenar los cómics
+                this.loading = true;
+                const response = await getAllComicsList(this.offset, this.limit, this.orderBy);
                 const newComics = response.data.results.map((comic) => {
                     return {
                         id: comic.id,
@@ -78,6 +83,8 @@ export default {
                 this.comics = newComics;
             } catch (error) {
                 console.error("Error al cargar los cómics:", error);
+            } finally {
+                this.loading = false;
             }
         },
 
@@ -95,6 +102,8 @@ export default {
 <style scoped>
 .container {
     text-align: center;
+    font-family: 'Nunito', sans-serif;
+    /* Cambia 'Nunito' a la fuente que prefieras */
 }
 
 .comic-list {
@@ -106,8 +115,18 @@ export default {
     border: 1px solid #ddd;
     margin-bottom: 20px;
     padding: 10px;
+    max-width: 400px;
+    /* Ajusta el ancho máximo según tu preferencia */
     display: flex;
     align-items: center;
+    background-color: white;
+    transition: opacity 0.3s;
+    margin: 0 auto;
+    /* Centra horizontalmente */
+}
+
+.comic-item:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .comic-details {
@@ -118,7 +137,6 @@ export default {
     font-size: 18px;
     margin: 0;
     color: #007bff;
-    /* Cambia el color de las letras a azul */
 }
 
 .pagination-container {
